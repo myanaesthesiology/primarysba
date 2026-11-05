@@ -1,0 +1,123 @@
+{
+  "version": "Primary-SOURCEFIDELITY02",
+  "questions_audited": 1102,
+  "stems_audited": 1102,
+  "options_audited": 4848,
+  "source_books": 8,
+  "plain_text_changed": 0,
+  "rich_stems": 386,
+  "rich_options": 152,
+  "tags": {
+    "strong": 364,
+    "em": 81,
+    "sup": 34,
+    "sub": 279
+  },
+  "sources": {
+    "BP": {
+      "questions": 96,
+      "stem_exact": 95,
+      "stem_fuzzy": 0,
+      "stem_low": 0,
+      "stem_rich": 57,
+      "option_total": 354,
+      "option_exact": 354,
+      "option_fuzzy": 0,
+      "option_low": 0,
+      "option_rich": 15
+    },
+    "BPharm": {
+      "questions": 225,
+      "stem_exact": 224,
+      "stem_fuzzy": 1,
+      "stem_low": 0,
+      "stem_rich": 127,
+      "option_total": 826,
+      "option_exact": 826,
+      "option_fuzzy": 0,
+      "option_low": 0,
+      "option_rich": 14
+    },
+    "ITP": {
+      "questions": 97,
+      "stem_exact": 96,
+      "stem_fuzzy": 0,
+      "stem_low": 0,
+      "stem_rich": 57,
+      "option_total": 378,
+      "option_exact": 378,
+      "option_fuzzy": 0,
+      "option_low": 0,
+      "option_rich": 7
+    },
+    "ITPharm": {
+      "questions": 114,
+      "stem_exact": 114,
+      "stem_fuzzy": 0,
+      "stem_low": 0,
+      "stem_rich": 63,
+      "option_total": 440,
+      "option_exact": 440,
+      "option_fuzzy": 0,
+      "option_low": 0,
+      "option_rich": 4
+    },
+    "FRCA450": {
+      "questions": 150,
+      "stem_exact": 146,
+      "stem_fuzzy": 3,
+      "stem_low": 0,
+      "stem_rich": 47,
+      "option_total": 750,
+      "option_exact": 750,
+      "option_fuzzy": 0,
+      "option_low": 0,
+      "option_rich": 42
+    },
+    "GT": {
+      "questions": 180,
+      "stem_exact": 179,
+      "stem_fuzzy": 0,
+      "stem_low": 0,
+      "stem_rich": 17,
+      "option_total": 900,
+      "option_exact": 899,
+      "option_fuzzy": 0,
+      "option_low": 0,
+      "option_rich": 34
+    },
+    "NW": {
+      "questions": 60,
+      "stem_exact": 60,
+      "stem_fuzzy": 0,
+      "stem_low": 0,
+      "stem_rich": 6,
+      "option_total": 300,
+      "option_exact": 300,
+      "option_fuzzy": 0,
+      "option_low": 0,
+      "option_rich": 12
+    },
+    "M2": {
+      "questions": 180,
+      "stem_exact": 164,
+      "stem_fuzzy": 13,
+      "stem_low": 0,
+      "stem_rich": 12,
+      "option_total": 900,
+      "option_exact": 897,
+      "option_fuzzy": 1,
+      "option_low": 0,
+      "option_rich": 24
+    }
+  },
+  "methodology": {
+    "exact_or_ordered_source_alignment": true,
+    "low_confidence_remaining": 0,
+    "bold_italic_from_pdf_font_metadata": true,
+    "sup_sub_from_pdf_font_size_and_baseline": true,
+    "unmatched_interrupted_text_left_unstyled": true,
+    "plain_question_wording_preserved": true,
+    "runtime_overlay_authoritative": true
+  }
+}
