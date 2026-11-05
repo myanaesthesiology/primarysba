@@ -1,0 +1,62 @@
+name: Upgrade PrimarySBA UX and performance
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - 'tools/upgrade_primary.py'
+      - 'tools/source-format-patch.json'
+      - '.github/workflows/upgrade-primary.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install build dependency
+        run: python -m pip install --disable-pip-version-check beautifulsoup4
+
+      - name: Build upgraded Primary Revision PWA
+        run: python tools/upgrade_primary.py
+
+      - name: Validate generated application
+        run: |
+          python - <<'PY'
+          import json, pathlib
+          root=pathlib.Path('.')
+          idx=json.loads((root/'data/bank-index.json').read_text())
+          assert len(idx)==1102
+          assert min(q['id'] for q in idx)==1 and max(q['id'] for q in idx)==1102
+          assert (root/'assets/app.js').stat().st_size > 50000
+          assert (root/'index.html').stat().st_size < 20000
+          assert len(list((root/'figures').glob('*')))==135
+          assert 'primarysba' in (root/'firebase-config.js').read_text()
+          print('Validation passed: 1102 questions, 135 figures, Firebase retained.')
+          PY
+          node --check assets/app.js
+          node --check service-worker.js
+
+      - name: Commit production build
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          if git diff --cached --quiet; then
+            echo "No generated changes to commit."
+          else
+            git commit -m "Upgrade PrimarySBA UX, source rendering and performance"
+            git push
+          fi
