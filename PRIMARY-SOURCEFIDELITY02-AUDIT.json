@@ -123,7 +123,7 @@
   },
   "deployment": {
     "format_map_directory": "data/format/",
-    "cache_version": "primary-revision-sourcefidelity02-v1",
+    "cache_version": "primary-revision-sourcefidelity02-v3",
     "firebase_discussions_preserved": true
   }
 }
