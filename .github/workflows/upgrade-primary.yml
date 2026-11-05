@@ -1,13 +1,10 @@
 name: Upgrade PrimarySBA UX and performance
 
 on:
-  workflow_dispatch:
   push:
     branches: [main]
     paths:
-      - 'tools/upgrade_primary.py'
-      - 'tools/source-format-patch.json'
-      - '.github/workflows/upgrade-primary.yml'
+      - ".github/workflows/upgrade-primary.yml"
 
 permissions:
   contents: write
@@ -20,43 +17,53 @@ jobs:
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
-
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
-          python-version: '3.12'
-
+          python-version: "3.12"
       - name: Install build dependency
         run: python -m pip install --disable-pip-version-check beautifulsoup4
-
       - name: Build upgraded Primary Revision PWA
         run: python tools/upgrade_primary.py
-
       - name: Validate generated application
+        shell: bash
         run: |
-          python - <<'PY'
-          import json, pathlib
-          root=pathlib.Path('.')
-          idx=json.loads((root/'data/bank-index.json').read_text())
-          assert len(idx)==1102
-          assert min(q['id'] for q in idx)==1 and max(q['id'] for q in idx)==1102
-          assert (root/'assets/app.js').stat().st_size > 50000
-          assert (root/'index.html').stat().st_size < 20000
-          assert len(list((root/'figures').glob('*')))==135
-          assert 'primarysba' in (root/'firebase-config.js').read_text()
-          print('Validation passed: 1102 questions, 135 figures, Firebase retained.')
-          PY
+          test ! -e index.html.bak
+          test -f assets/app.js
+          test -f assets/app.css
+          test -f data/bank-index.json
+          test -f data/search-index.json
+          test -d figures
           node --check assets/app.js
           node --check service-worker.js
-
+          python - <<'PY'
+          import json, pathlib
+          root=pathlib.Path(".")
+          idx=json.loads((root/"data/bank-index.json").read_text())
+          report=json.loads((root/"PRIMARY-UXPERF01-INTEGRITY.json").read_text())
+          assert len(idx)==1102
+          assert min(q["id"] for q in idx)==1 and max(q["id"] for q in idx)==1102
+          assert len(list((root/"figures").glob("*")))==135
+          assert report["original_payload_sha256"]=="12e1a2cd27ff3566937e6771aa8eab9fcc795f505d3e24be1c6c38880eebfd68"
+          assert report["firebase_config_preserved"] is True
+          assert report["figures_externalized"]==135
+          assert (root/"index.html").stat().st_size < 20000
+          assert "primarysba" in (root/"firebase-config.js").read_text()
+          print(json.dumps(report,indent=2))
+          PY
+      - name: Remove one-time migration scaffolding
+        shell: bash
+        run: |
+          rm -rf tools
+          rm -f .github/workflows/primary-uxperf-migrate.yml
+          rm -f .github/workflows/upgrade-primary.yml
+          rmdir .github/workflows 2>/dev/null || true
+          rmdir .github 2>/dev/null || true
       - name: Commit production build
+        shell: bash
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add -A
-          if git diff --cached --quiet; then
-            echo "No generated changes to commit."
-          else
-            git commit -m "Upgrade PrimarySBA UX, source rendering and performance"
-            git push
-          fi
+          git commit -m "Upgrade PrimarySBA UI, source rendering and performance"
+          git push origin HEAD:main
