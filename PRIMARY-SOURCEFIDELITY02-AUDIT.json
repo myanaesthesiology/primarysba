@@ -8,7 +8,7 @@
   "rich_stems": 386,
   "rich_options": 152,
   "tags": {
-    "strong": 364,
+    "strong": 369,
     "em": 81,
     "sup": 34,
     "sub": 279
@@ -118,6 +118,12 @@
     "sup_sub_from_pdf_font_size_and_baseline": true,
     "unmatched_interrupted_text_left_unstyled": true,
     "plain_question_wording_preserved": true,
-    "runtime_overlay_authoritative": true
+    "runtime_overlay_authoritative": true,
+    "runtime_format_maps_loaded_lazily_by_source": true
+  },
+  "deployment": {
+    "format_map_directory": "data/format/",
+    "cache_version": "primary-revision-sourcefidelity02-v1",
+    "firebase_discussions_preserved": true
   }
 }
