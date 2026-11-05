@@ -1,0 +1,32 @@
+name: Primary Revision quality checks
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Validate JavaScript syntax
+        run: |
+          node --check assets/app.js
+          node --check firebase-config.js
+          node --check service-worker.js
+      - name: Check question bank, source structure, figures, PWA and progress compatibility
+        run: node scripts/verify-bank.mjs
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: primary-revision-source-fidelity
+          path: qa/primary-qa-report.json
+          if-no-files-found: ignore
